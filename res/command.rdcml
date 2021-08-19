@@ -1,0 +1,11 @@
+fastblocks,fb {
+	test material:type {
+		help Tests a thing
+		hook test
+		user player
+	}
+	light {
+		hook light
+		user player
+	}
+}

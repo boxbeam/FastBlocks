@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+dependencies {
+    compileOnly files(projectDir.toPath().parent.parent.resolve("alljars/spigot-1.8.8.jar"))
+    implementation project(":common")
+}
+sourceSets {
+    main {
+        java {
+            srcDir "src"
+        }
+        resources {
+            srcDir "res"
+        }
+    }
+}

@@ -1,0 +1,58 @@
+plugins {
+	id "java"
+	id "idea"
+	id 'com.github.johnrengelman.shadow' version '6.0.0'
+}
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+repositories {
+	mavenCentral()
+	maven {
+		url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+		name = "spigot"
+		content {
+			includeGroup "org.bukkit"
+			includeGroup "org.spigotmc"
+		}
+	}
+	maven {
+		url = "https://oss.sonatype.org/content/repositories/snapshots"
+	}
+	mavenLocal()
+	maven {
+		url = "https://jitpack.io"
+	}
+}
+dependencies {
+	implementation project(":1.17")
+	implementation project(":1.16")
+	implementation project(":1.13")
+	implementation project(":1.12")
+	implementation project(":1.8")
+	implementation project(":common")
+	compileOnly "org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT"
+	compileOnly files("/home/redempt/Desktop/Spigot/1.15/plugins/RedLib.jar")
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir "src"
+		}
+		resources {
+			srcDir "res"
+		}
+	}
+}
+task deploy(dependsOn: jar) {
+	doLast {
+		copy {
+			from "build/libs"
+			into "/home/redempt/Desktop/Spigot/1.17/plugins"
+		}
+	}
+}
+
+java {
+	disableAutoTargetJvm()
+}

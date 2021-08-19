@@ -1,0 +1,18 @@
+rootProject.name = 'FastBlocks'
+include 'common'
+project(':common').setProjectDir(new File("modules/common"))
+
+include '1.17'
+project(':1.17').setProjectDir(new File("modules/1.17"))
+
+include '1.16'
+project(':1.16').setProjectDir(new File("modules/1.16"))
+
+include '1.13'
+project(':1.13').setProjectDir(new File("modules/1.13"))
+
+include '1.12'
+project(':1.12').setProjectDir(new File("modules/1.12"))
+
+include '1.8'
+project(':1.8').setProjectDir(new File("modules/1.8"))

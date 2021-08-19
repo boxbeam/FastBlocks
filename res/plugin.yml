@@ -1,0 +1,6 @@
+name: FastBlocks
+version: 1.0
+depend: [RedLib]
+author: Redempt
+main: redempt.fastblocks.FastBlocksPlugin
+api-version: 1.13
