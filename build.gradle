@@ -31,7 +31,7 @@ dependencies {
 	implementation project(":1.8")
 	implementation project(":common")
 	compileOnly "org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT"
-	compileOnly files("/home/redempt/Desktop/Spigot/1.15/plugins/RedLib.jar")
+	compileOnly "com.github.Redempt:RedLib:5.0.6"
 }
 
 sourceSets {
