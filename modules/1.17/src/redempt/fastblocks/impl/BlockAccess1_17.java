@@ -1,11 +1,16 @@
 package redempt.fastblocks.impl;
 
 import net.minecraft.core.BlockPosition;
+import net.minecraft.core.SectionPosition;
 import net.minecraft.network.protocol.game.PacketPlayOutMapChunk;
 import net.minecraft.server.level.LightEngineThreaded;
+import net.minecraft.server.level.TicketType;
 import net.minecraft.world.level.ChunkCoordIntPair;
+import net.minecraft.world.level.EnumSkyBlock;
 import net.minecraft.world.level.chunk.Chunk;
 import net.minecraft.world.level.chunk.ChunkSection;
+import net.minecraft.world.level.chunk.NibbleArray;
+import net.minecraft.world.level.lighting.LightEngineLayer;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -52,6 +57,12 @@ public class BlockAccess1_17 implements BlockAccess {
 		CraftWorld cw = (CraftWorld) world;
 		Chunk chunk = cw.getHandle().getChunkAt(x, z);
 		LightEngineThreaded engine = chunk.i.getChunkProvider().getLightEngine();
+		//engine.a(EnumSkyBlock.b, SectionPosition.a(chunk.getPos(), chunk.getSections()[0].getYPosition()), chunk.i.getChunkProvider()., true);
+		engine.a(EnumSkyBlock.b).a(Integer.MAX_VALUE, true, true); // runUpdates(int, boolean, boolean)
+
+		//engine.a(EnumSkyBlock.b);
+
+		/*
 		try {
 			Method method = engine.getClass().getDeclaredMethod("a", ChunkCoordIntPair.class);
 			method.setAccessible(true);
@@ -62,6 +73,7 @@ public class BlockAccess1_17 implements BlockAccess {
 		engine.a(chunk, true);
 		engine.queueUpdate();
 		engine.a(100);
+		 */
 //		chunk.i.getChunkProvider().getLightEngine().b(new ChunkCoordIntPair(x, z), false);
 	}
 	

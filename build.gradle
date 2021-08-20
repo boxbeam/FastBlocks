@@ -44,6 +44,7 @@ sourceSets {
 		}
 	}
 }
+/*
 task deploy(dependsOn: jar) {
 	doLast {
 		copy {
@@ -52,6 +53,8 @@ task deploy(dependsOn: jar) {
 		}
 	}
 }
+
+ */
 
 java {
 	disableAutoTargetJvm()
