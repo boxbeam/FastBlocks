@@ -56,9 +56,10 @@ public class BlockAccess1_17 implements BlockAccess {
 	public void updateLighting(World world, int x, int z) {
 		CraftWorld cw = (CraftWorld) world;
 		Chunk chunk = cw.getHandle().getChunkAt(x, z);
-		LightEngineThreaded engine = chunk.i.getChunkProvider().getLightEngine();
+		//LightEngineThreaded engine = chunk.i.getChunkProvider().getLightEngine();
 		//engine.a(EnumSkyBlock.b, SectionPosition.a(chunk.getPos(), chunk.getSections()[0].getYPosition()), chunk.i.getChunkProvider()., true);
-		engine.a(EnumSkyBlock.b).a(Integer.MAX_VALUE, true, true); // runUpdates(int, boolean, boolean)
+		//engine.a(EnumSkyBlock.b).a(Integer.MAX_VALUE, true, true); // runUpdates(int, boolean, boolean)
+		chunk.b(false);
 
 		//engine.a(EnumSkyBlock.b);
 
