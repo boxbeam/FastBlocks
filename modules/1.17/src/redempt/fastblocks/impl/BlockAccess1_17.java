@@ -19,6 +19,7 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import redempt.fastblocks.BlockAccess;
 
 import java.lang.reflect.Field;
@@ -60,6 +61,12 @@ public class BlockAccess1_17 implements BlockAccess {
 		//engine.a(EnumSkyBlock.b, SectionPosition.a(chunk.getPos(), chunk.getSections()[0].getYPosition()), chunk.i.getChunkProvider()., true);
 		//engine.a(EnumSkyBlock.b).a(Integer.MAX_VALUE, true, true); // runUpdates(int, boolean, boolean)
 		chunk.b(false);
+
+		final Vector[] offsets = new Vector[]{ new Vector(1, 0, 0), new Vector(0, 0, 1), new Vector(-1, 0, 0), new Vector(0, 0, -1) };
+
+    for (Vector offset : offsets) {
+			cw.getHandle().getChunkAt(x + offset.getBlockX(), z + offset.getBlockZ()).b(false);
+    }
 
 		//engine.a(EnumSkyBlock.b);
 
