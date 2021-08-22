@@ -24,7 +24,10 @@ public class BlockAccess1_17 implements BlockAccess {
   private static final Supplier<Method> UPDATE_CHUNK_STATUS_METHOD =
 			Suppliers.memoize(() -> {
 				try {
-					return LightEngineThreaded.class.getDeclaredMethod("a", ChunkCoordIntPair.class);
+					final Method method = LightEngineThreaded.class.getDeclaredMethod("a", ChunkCoordIntPair.class);
+					method.setAccessible(true);
+
+					return method;
 				} catch (NoSuchMethodException e) {
 					throw new RuntimeException(e);
 				}
