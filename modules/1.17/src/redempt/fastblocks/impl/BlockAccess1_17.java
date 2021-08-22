@@ -1,17 +1,12 @@
 package redempt.fastblocks.impl;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPosition;
-import net.minecraft.core.SectionPosition;
 import net.minecraft.network.protocol.game.PacketPlayOutMapChunk;
 import net.minecraft.server.level.LightEngineThreaded;
-import net.minecraft.server.level.TicketType;
 import net.minecraft.world.level.ChunkCoordIntPair;
-import net.minecraft.world.level.EnumSkyBlock;
 import net.minecraft.world.level.chunk.Chunk;
 import net.minecraft.world.level.chunk.ChunkSection;
-import net.minecraft.world.level.chunk.NibbleArray;
-import net.minecraft.world.level.lighting.LightEngineLayer;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -19,15 +14,22 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import redempt.fastblocks.BlockAccess;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 public class BlockAccess1_17 implements BlockAccess {
-	
+  private static final Supplier<Method> UPDATE_CHUNK_STATUS_METHOD =
+			Suppliers.memoize(() -> {
+				try {
+					return LightEngineThreaded.class.getDeclaredMethod("a", ChunkCoordIntPair.class);
+				} catch (NoSuchMethodException e) {
+					throw new RuntimeException(e);
+				}
+			});
+
 	@Override
 	public void update(BlockState state) {
 		Block block = state.getBlock();
@@ -57,32 +59,16 @@ public class BlockAccess1_17 implements BlockAccess {
 	public void updateLighting(World world, int x, int z) {
 		CraftWorld cw = (CraftWorld) world;
 		Chunk chunk = cw.getHandle().getChunkAt(x, z);
-		//LightEngineThreaded engine = chunk.i.getChunkProvider().getLightEngine();
-		//engine.a(EnumSkyBlock.b, SectionPosition.a(chunk.getPos(), chunk.getSections()[0].getYPosition()), chunk.i.getChunkProvider()., true);
-		//engine.a(EnumSkyBlock.b).a(Integer.MAX_VALUE, true, true); // runUpdates(int, boolean, boolean)
-		chunk.b(false);
+		LightEngineThreaded engine = chunk.i.getChunkProvider().getLightEngine();
 
-		final Vector[] offsets = new Vector[]{ new Vector(1, 0, 0), new Vector(0, 0, 1), new Vector(-1, 0, 0), new Vector(0, 0, -1) };
-
-    for (Vector offset : offsets) {
-			cw.getHandle().getChunkAt(x + offset.getBlockX(), z + offset.getBlockZ()).b(false);
-    }
-
-		//engine.a(EnumSkyBlock.b);
-
-		/*
 		try {
-			Method method = engine.getClass().getDeclaredMethod("a", ChunkCoordIntPair.class);
-			method.setAccessible(true);
-			method.invoke(engine, new ChunkCoordIntPair(x, z));
-		} catch (Exception e) {
-			e.printStackTrace();
+			UPDATE_CHUNK_STATUS_METHOD.get().invoke(engine, chunk.getPos());
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new RuntimeException(e);
 		}
-		engine.a(chunk, true);
+		chunk.b(false);
+		engine.a(chunk.getPos(), true);
 		engine.queueUpdate();
-		engine.a(100);
-		 */
-//		chunk.i.getChunkProvider().getLightEngine().b(new ChunkCoordIntPair(x, z), false);
 	}
 	
 }
