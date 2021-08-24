@@ -70,6 +70,7 @@ public class BlockAccess1_17 implements BlockAccess {
 			throw new RuntimeException(e);
 		}
 		chunk.b(false);
+		chunk.markDirty();
 		engine.a(chunk.getPos(), true);
 		engine.queueUpdate();
 	}
