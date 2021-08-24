@@ -73,9 +73,9 @@ public class FastBlocks {
 					continue;
 				}
 				access.refreshChunk(c.x, c.z, player);
-				if (updateLighting) {
-					access.updateLighting(c.world, c.x, c.z);
-				}
+			}
+			if (updateLighting) {
+				access.updateLighting(c.world, c.x, c.z);
 			}
 		});
 		modified.clear();
