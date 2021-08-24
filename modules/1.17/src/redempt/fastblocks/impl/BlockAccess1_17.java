@@ -18,20 +18,11 @@ import redempt.fastblocks.BlockAccess;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class BlockAccess1_17 implements BlockAccess {
-  private static final Supplier<Method> UPDATE_CHUNK_STATUS_METHOD =
-			Suppliers.memoize(() -> {
-				try {
-					final Method method = LightEngineThreaded.class.getDeclaredMethod("a", ChunkCoordIntPair.class);
-					method.setAccessible(true);
-
-					return method;
-				} catch (NoSuchMethodException e) {
-					throw new RuntimeException(e);
-				}
-			});
 
 	@Override
 	public void update(BlockState state) {
@@ -61,18 +52,19 @@ public class BlockAccess1_17 implements BlockAccess {
 	@Override
 	public void updateLighting(World world, int x, int z) {
 		CraftWorld cw = (CraftWorld) world;
-		Chunk chunk = cw.getHandle().getChunkAt(x, z);
-		LightEngineThreaded engine = chunk.i.getChunkProvider().getLightEngine();
 
-		try {
-			UPDATE_CHUNK_STATUS_METHOD.get().invoke(engine, chunk.getPos());
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-		chunk.b(false);
-		chunk.markDirty();
-		engine.a(chunk.getPos(), true);
-		engine.queueUpdate();
+		getNearbyChunks(cw.getHandle(), x, z).forEach(Chunk::markDirty);
 	}
-	
+
+	private List<Chunk> getNearbyChunks(net.minecraft.world.level.World world, int cx, int cz) {
+		final List<Chunk> chunks = new ArrayList<>();
+
+		for (int offX = -1; offX < 2; offX++) {
+			for (int offZ = -1; offZ < 2; offZ++) {
+				chunks.add(world.getChunkAt(cx + offX, cz + offZ));
+			}
+		}
+
+		return chunks;
+	}
 }
