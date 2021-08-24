@@ -53,17 +53,12 @@ public class BlockAccess1_17 implements BlockAccess {
 	@Override
 	public void updateLighting(World world, int x, int z) {
 		CraftWorld cw = (CraftWorld) world;
-		Chunk chunk = cw.getHandle().getChunkAt(x, z);
-		chunk.i.getChunkProvider().a.l.get(ChunkCoordIntPair.pair(x, z)).a(chunk);
 
-		/*
 		for (int offX = -1; offX < 2; offX++) {
 			for (int offZ = -1; offZ < 2; offZ++) {
 				Chunk chunk = cw.getHandle().getChunkAt(x + offX, z + offZ);
 				chunk.i.getChunkProvider().a.l.get(ChunkCoordIntPair.pair(x, z)).a(chunk);
 			}
 		}
-
-		 */
 	}
 }
