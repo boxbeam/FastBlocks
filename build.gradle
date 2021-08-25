@@ -56,6 +56,10 @@ task deploy(dependsOn: jar) {
 
  */
 
+shadowJar {
+	archiveFileName = "FastBlocks.jar"
+}
+
 java {
 	disableAutoTargetJvm()
 }
