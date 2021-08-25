@@ -67,15 +67,15 @@ public class FastBlocks {
 	
 	public static void refreshChunks(boolean updateLighting) {
 		modified.forEach(c -> {
+			if (updateLighting) {
+				access.updateLighting(c.world, c.x, c.z);
+			}
 			for (Player player : c.world.getPlayers()) {
 				ChunkPosition cpos = new ChunkPosition(player.getLocation().getBlock());
 				if (cpos.distance(c) > Bukkit.getViewDistance()) {
 					continue;
 				}
 				access.refreshChunk(c.x, c.z, player);
-			}
-			if (updateLighting) {
-				access.updateLighting(c.world, c.x, c.z);
 			}
 		});
 		modified.clear();

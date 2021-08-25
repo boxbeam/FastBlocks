@@ -1,23 +1,13 @@
 package redempt.fastblocks.impl;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPosition;
-import net.minecraft.core.SectionPosition;
-import net.minecraft.network.protocol.game.PacketPlayOutLightUpdate;
 import net.minecraft.network.protocol.game.PacketPlayOutMapChunk;
 import net.minecraft.server.level.ChunkProviderServer;
 import net.minecraft.server.level.LightEngineThreaded;
-import net.minecraft.server.level.PlayerChunk;
-import net.minecraft.server.level.TicketType;
-import net.minecraft.util.Unit;
 import net.minecraft.world.level.ChunkCoordIntPair;
-import net.minecraft.world.level.EnumSkyBlock;
 import net.minecraft.world.level.chunk.Chunk;
 import net.minecraft.world.level.chunk.ChunkSection;
-import net.minecraft.world.level.chunk.ChunkStatus;
-import net.minecraft.world.level.chunk.NibbleArray;
-import net.minecraft.world.level.lighting.LightEngineLayer;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -25,15 +15,17 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import redempt.fastblocks.BlockAccess;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class BlockAccess1_17 implements BlockAccess {
-	
+
 	@Override
 	public void update(BlockState state) {
 		Block block = state.getBlock();
@@ -63,8 +55,8 @@ public class BlockAccess1_17 implements BlockAccess {
 	public void updateLighting(World world, int x, int z) {
 		CraftWorld cw = (CraftWorld) world;
 		Chunk chunk = cw.getHandle().getChunkAt(x, z);
-//		chunk.markDirty();
-//		chunk.b(false);
+		chunk.markDirty();
+		chunk.b(false);
 		ChunkProviderServer s = cw.getHandle().getChunkProvider();
 		s.a(x, z);
 		LightEngineThreaded engine = cw.getHandle().getChunkProvider().getLightEngine();
@@ -75,6 +67,6 @@ public class BlockAccess1_17 implements BlockAccess {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		chunk.i.getChunkProvider().a.l.get(ChunkCoordIntPair.pair(x, z)).a(chunk);
 	}
-	
 }
