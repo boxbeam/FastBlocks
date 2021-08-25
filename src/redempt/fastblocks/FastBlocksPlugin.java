@@ -4,11 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import redempt.redlib.commandmanager.ArgType;
 import redempt.redlib.commandmanager.CommandHook;
 import redempt.redlib.commandmanager.CommandParser;
+import redempt.redlib.misc.Task;
 import redempt.redlib.region.CuboidRegion;
 
 public class FastBlocksPlugin extends JavaPlugin implements Listener {
@@ -38,6 +41,14 @@ public class FastBlocksPlugin extends JavaPlugin implements Listener {
 	@CommandHook("light")
 	public void light(Player player) {
 		FastBlocks.updateLighting(player.getLocation().getChunk());
+	}
+	
+	@EventHandler
+	public void onLeave(PlayerQuitEvent e) {
+		Task.syncDelayed(() -> {
+//			e.getPlayer().getLocation().getChunk().unload();
+//			System.out.println("Chunk unloaded");
+		}, 20);
 	}
 	
 }
